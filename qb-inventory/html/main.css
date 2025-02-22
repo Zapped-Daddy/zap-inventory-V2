@@ -1,0 +1,598 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans&display=swap");
+
+/* Root variables for easy customization */
+:root {
+  --primary-color: #1a1a1a; /* Dark background */
+  --secondary-color: #2c2c2c; /* Slot background */
+  --accent-color: #7bff00; /* Green highlights (matching the image) */
+  --text-color: #ffffff; /* Main text */
+  --hover-color: rgba(60, 124, 0, 0.3); /* Green hover effect */
+  --border-radius: 15px;
+  --shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+  --slot-size: 108px; /* Size of inventory slots */
+}
+
+body {
+  margin: 0;
+}
+
+div {
+  font-family: "Open Sans", sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+#app {
+  height: 100vh;
+  width: 100vw;
+  background: transparent;
+}
+
+.inventory-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Player Inventory Styles */
+.player-inventory,
+.other-inventory {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: flex-start;
+  position: absolute;
+  top: 30vh;
+  width: 30vw;
+  height: 48vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.801);
+  border: 4px solid #808685;
+  border-radius: var(--border-radius);
+}
+
+.player-inventory {
+  left: 5vw;
+  transform: perspective(800px) rotateY(5deg);
+  transition: transform 0.2s ease-in-out;
+  transform-origin: top bottom;
+}
+
+.other-inventory {
+  right: 5vw;
+  transform: perspective(800px) rotateY(-5deg);
+  transition: transform 0.2s ease-in-out;
+  transform-origin: top bottom;
+}
+
+/* Inventory Headers */
+.player-inventory-header,
+.other-inventory-header {
+  box-sizing: border-box;
+  position: absolute;
+  top: 22vh;
+  width: 25vw;
+  height: fit-content;
+  font-weight: bolder;
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: rgba(0, 0, 0, 0.801);
+  border-radius: var(--border-radius);
+  border: 2px solid #808685;
+}
+
+.player-inventory-header {
+  left: 5vw;
+  transform: rotate(1.75deg); 
+  transition: transform 0.2s ease-in-out;
+  transform-origin: top bottom; 
+}
+
+.other-inventory-header {
+  right: 5vw;
+  transform: rotate(-1.75deg); 
+  transition: transform 0.2s ease-in-out;
+  transform-origin: top bottom; 
+}
+
+/* Centered Styles */
+.centered-player-inventory {
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+}
+
+.centered-inventory-header {
+  box-sizing: border-box;
+  position: absolute;
+  top: 17vh;
+  width: 27.9vw;
+  left: 50vw;
+  transform: translateX(-50%);
+  height: fit-content;
+  font-weight: bolder;
+  color: var(--text-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+/* Labels Container */
+.labels-container {
+  display: flex;
+  width: 95%;
+}
+
+.inventory-label {
+  flex-grow: 1;
+  color: var(--text-color);
+  font-size: 16px;
+}
+
+/* Item Grid and Slots */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(5, var(--slot-size));
+  gap: 5px;
+}
+
+.item-slot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    left: 10%;
+    margin: 0.5px;
+    height: 11vh;
+    border: 2px solid rgba(85, 175, 0, 0.671);
+    border-radius: 10px;
+    background: rgba(40, 100, 0, 0.8);
+
+    background: linear-gradient(90deg, rgba(25, 27, 24, 0.8) 0%, rgba(30, 30, 30, 0.8) 100%);
+
+    background: -moz-linear-gradient(90deg, rgba(25, 27, 24, 0.691) 0%, rgba(30, 30, 30, 0.724) 100%);
+
+    background: -webkit-linear-gradient(90deg, rgba(25, 27, 24, 0.691) 0%, rgba(30, 30, 30, 0.724) 100%);
+
+    filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3BD2A8", endColorstr="#2B2B2C", GradientType=1 );
+}
+
+.item-slot:hover {
+  background: var(--hover-color);
+  border-color: #00000057; /* Slightly lighter green on hover */
+}
+
+/* Item Image */
+.item-slot-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: var(--border-radius);
+}
+
+.item-slot-img img {
+  width: 50%;
+  height: auto;
+}
+
+/* Item Slot Key (e.g., slot number) */
+.item-slot-key {
+  font-weight: bolder;
+  color: #000000;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  background-color: #cccccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.2);
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+}
+
+/* Item Amount */
+.item-slot-amount {
+  font-size: 0.7vh;
+  color: var(--text-color);
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+}
+
+/* Item Price (if applicable) */
+.item-price {
+  font-size: 0.7vh;
+  color: var(--text-color);
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+}
+
+/* Item Label (name under slot) */
+.item-slot-label {
+  position: absolute;
+  white-space: nowrap;
+  bottom: 0;
+  height: 1vh;
+  width: 100%;
+  background-color: #cccccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.1), 0 2px 2px rgba(0, 0, 0, 0.2);
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+}
+
+.item-slot-label > p {
+  text-transform: uppercase;
+  font-weight: bolder;
+  color: #000000;
+  font-size: 0.7vh;
+  text-align: center;
+}
+
+/* Durability Bar */
+.item-slot-durability {
+  position: absolute;
+  bottom: 0vh;
+  width: 99%;
+  height: 6px;
+  background-color: #2d2d2d;
+}
+
+.item-slot-durability-fill {
+  height: 100%;
+  transition: width 0.2s;
+}
+
+.item-slot-durability-fill.high {
+  background-color: #3c7c00; /* Green for high durability */
+}
+
+.item-slot-durability-fill.medium {
+  background-color: #ffd700; /* Yellow for medium durability */
+}
+
+.item-slot-durability-fill.low {
+  background-color: #ff0000; /* Red for low durability */
+}
+
+/* Weight Bar Styles */
+.current-weight > p {
+  text-align: right;
+  padding-right: 5px;
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.weight-bar {
+  width: 98%;
+  height: 8px;
+  background-color: #2d2d2d;
+  border-radius: 30px;
+}
+
+.weight-bar-fill {
+  height: 100%;
+  transition: width 0.2s;
+}
+
+.weight-bar-fill.low {
+  background-color: rgb(147, 255, 45); /* Green for low weight (less full) */
+  border-radius: var(--border-radius);
+}
+
+.weight-bar-fill.medium {
+  background-color: #ffd700; /* Yellow for medium weight */
+  border-radius: var(--border-radius);
+}
+
+.weight-bar-fill.high {
+  background-color: #ff0000; /* Red for high weight (near full) */
+  border-radius: var(--border-radius);
+}
+
+/* Hotbar */
+.hotbar-container {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-bottom: 3vh;
+}
+
+.hotbar {
+  display: flex;
+  justify-content: space-between;
+  width: 25vw;
+  padding: 0 10px;
+  background: var(--primary-color);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+
+.hotbar .item-slot {
+  width: calc(20% - 2px);
+  height: 60px;
+  margin: 1px;
+  left: 0%;
+  border: 2px solid var(--accent-color);
+  background: rgba(40, 40, 40, 0.8);
+}
+
+/* Notification and Required Item Containers */
+.notification-container,
+.required-item-container {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  bottom: 2vh;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.notification-slot,
+.required-item .item-slot {
+  position: relative;
+  width: 10vh;
+  height: 10vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.notification-title {
+  color: var(--text-color);
+  align-self: flex-start;
+  margin: 5px;
+}
+
+.notification-title p {
+  margin: 0;
+  padding: 0;
+  font-size: 0.7vh;
+}
+
+.required-item {
+  display: flex;
+  justify-content: center;
+  width: 25vw;
+  padding: 0 10px;
+}
+
+/* Context Menu */
+.context-menu {
+  position: absolute;
+  font-size: 1vh;
+  border-radius: 4px;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--accent-color);
+  z-index: 1000;
+  width: fit-content;
+  cursor: pointer;
+  color: var(--text-color);
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  box-shadow: var(--shadow);
+}
+
+.context-menu li {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+}
+
+.context-menu li:hover {
+  background-color: var(--hover-color);
+}
+
+.submenu {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  font-size: 0.9vh;
+  background-color: var(--secondary-color);
+  border: 1px solid var(--accent-color);
+  border-radius: 4px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: none;
+  box-shadow: var(--shadow);
+  z-index: 1001;
+}
+
+.context-menu li:hover .submenu {
+  display: block;
+}
+
+.submenu li {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+}
+
+.submenu li:hover {
+  background-color: var(--hover-color);
+}
+
+/* Input Container */
+.input-container {
+  position: absolute;
+  width: 4%;
+  top: calc(26% + ((47.16% - 3vh) / 2));
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--secondary-color);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.input-container input {
+  border: none;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1vh;
+  width: 85%;
+  outline: none;
+  text-align: center;
+  flex: 1;
+}
+
+.clear-button {
+  margin-left: 5px;
+  background-color: var(--secondary-color);
+  border: none;
+}
+
+.clear-button .fas {
+  color: var(--text-color);
+}
+
+/* Custom Tooltip */
+.custom-tooltip {
+  max-width: 20vw;
+  background: var(--primary-color);
+  border: 1px solid var(--accent-color);
+  border-radius: var(--border-radius);
+  padding: 10px;
+  color: var(--text-color);
+  box-shadow: var(--shadow);
+}
+
+.custom-tooltip .tooltip-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--accent-color);
+}
+
+.custom-tooltip .tooltip-divider {
+  border: none;
+  border-top: 1px solid var(--accent-color);
+  margin: 5px 0;
+}
+
+.custom-tooltip .tooltip-description {
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+.custom-tooltip .tooltip-info {
+  font-size: 0.9em;
+  margin: 5px 0;
+  margin-bottom: 10px;
+}
+
+.custom-tooltip .tooltip-info-key {
+  font-weight: bold;
+}
+
+.custom-tooltip .tooltip-weight {
+  font-size: 0.8em;
+  text-align: right;
+}
+
+/* Weapon Attachments (if applicable) */
+.weapon-attachments {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 12vw;
+  height: 21vh;
+  border-radius: 50%;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 15%;
+  transform: translate(-50%, -50%);
+  background: var(--primary-color);
+  border: 2px solid var(--accent-color);
+}
+
+.weapon {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.attachment-slot {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--border-radius);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.attachment-slot img {
+  width: 75%;
+  height: auto;
+}
+
+.attachment-slot:nth-child(0),
+.attachment-slot:nth-child(1),
+.attachment-slot:nth-child(2),
+.attachment-slot:nth-child(3),
+.attachment-slot:nth-child(4),
+.attachment-slot:nth-child(5),
+.attachment-slot:nth-child(6),
+.attachment-slot:nth-child(7) {
+  transform: rotate(0deg) translate(150px) rotate(0deg); /* Adjust as needed to match your attachment layout */
+}
